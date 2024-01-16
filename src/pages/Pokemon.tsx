@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { usePokemonContext } from '../context/PokemonContext';
+
+
 function Pokemon() {
+
+  const { state } = usePokemonContext();
+  console.log('Current state:', state);
+
+
 
   const POKEMON_API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon/ditto'
 
@@ -23,6 +31,7 @@ function Pokemon() {
 
   return (
     <>
+
       {
         pokemon && (
           <div>
