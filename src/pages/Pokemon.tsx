@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { usePokemonContext } from '../context/PokemonContext';
-
+// Constants
+const POKEMON_API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon/ditto'
 
 function Pokemon() {
 
-  const { state } = usePokemonContext();
-  console.log('Current state:', state);
-
-
-
-  const POKEMON_API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon/ditto'
-
+  // Hooks
   const { name } = useParams();
-
   const [pokemon, setPokemon] = useState(null)
 
   useEffect(() => {
@@ -22,7 +15,6 @@ function Pokemon() {
     fetch(POKEMON_API_ENDPOINT)
       .then(res => res.json())
       .then(data => {
-        console.log('data: ', data)
         setPokemon(data)
       })
     

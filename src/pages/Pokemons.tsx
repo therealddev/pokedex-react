@@ -1,85 +1,32 @@
 import { useState, useEffect } from 'react'
 import { usePokemonContext } from '../context/PokemonContext';
-
 import { Link } from 'react-router-dom';
+import {Pokemon, PokemonsResponse} from '../interfaces/interfaces'
+import { fetchPokemons, fetchPokemon } from '../services/pokemonService';
 
-interface Pokemons {
-  name: string;
-  url: string;
-}
 
-interface Pokemon {
-  name: string;
-  id: number;
-  sprites: {
-    front_default: string;
-  }
-}
 
 function Pokemons() {
 
-  console.log('POKEMONS RENDER')
+  const API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon?limit=12&offset=0'
 
-  const { state, dispatch } = usePokemonContext();
-  // console.log('state: ', state)
-  console.log('Before dispatch:', state);
-  // console.log('state.detailedPokemonsList: ', state.detailedPokemonsList)
-
-
-  // const API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon?limit=12&offset=0'
-
-  const INITIAL_DATA = {"count":1302,"next":"https://pokeapi.co/api/v2/pokemon?offset=12&limit=12","previous":null,"results":[{"name":"bulbasaur","url":"https://pokeapi.co/api/v2/pokemon/1/"},{"name":"ivysaur","url":"https://pokeapi.co/api/v2/pokemon/2/"},{"name":"venusaur","url":"https://pokeapi.co/api/v2/pokemon/3/"},{"name":"charmander","url":"https://pokeapi.co/api/v2/pokemon/4/"},{"name":"charmeleon","url":"https://pokeapi.co/api/v2/pokemon/5/"},{"name":"charizard","url":"https://pokeapi.co/api/v2/pokemon/6/"},{"name":"squirtle","url":"https://pokeapi.co/api/v2/pokemon/7/"},{"name":"wartortle","url":"https://pokeapi.co/api/v2/pokemon/8/"},{"name":"blastoise","url":"https://pokeapi.co/api/v2/pokemon/9/"},{"name":"caterpie","url":"https://pokeapi.co/api/v2/pokemon/10/"},{"name":"metapod","url":"https://pokeapi.co/api/v2/pokemon/11/"},{"name":"butterfree","url":"https://pokeapi.co/api/v2/pokemon/12/"}]}
-  
   // Hooks
-  const [pokemons, setPokemons] = useState(INITIAL_DATA)
+  const { state, dispatch } = usePokemonContext();
+  const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | undefined>();
 
-  // const [pokemonsData, setPokemonsData] = useState<Pokemon[] | null>(state.detailedPokemonsList);
-  // const [newPokemonsData, setnewPokemonsData] = useState<Pokemon[] | null>(null);
-
-
-
-  // useEffect(() => {
-
-  //   console.log('pokemons: ', pokemons)
-
-  //   const fetchData = async () => {
-  //     const pokemonsData = await Promise.all(
-  //       pokemons.results.map(async (pokemon) => {
-          
-  //         const response = await fetch(pokemon.url);
-  //         const pokemonData = await response.json();
-  //         // console.log('pokemonData: ', pokemonData)
-  //         return pokemonData;
-  //       })
-  //     );
-      
-  //     console.log('pokemonsData: ', pokemonsData)
-      
-  //     // setPokemonsData(pokemonsData);
-  //   };
-  
-  //   fetchData();
-  // }, []);
-
-  // Functions
-
-  
-
-  function getMorePokemons() {
-
-    console.log('get more pokemons')
-    console.log('pokemons.next: ', pokemons.next)
-
-    fetch(pokemons.next)
+  useEffect(() => {
+    
+    fetch(API_ENDPOINT)
       .then(res => res.json())
-      .then(newPokemons => {
-        newPokemons
+      .then(data => {
+        
+        console.log('data: ', data)
+        setPokemonsResponse(data)
 
-        // console.log('newPokemonsData: ', newPokemonsData)
-
-        const fetchDataAgain = async () => {
-          const newData = await Promise.all(
-            newPokemons.results.map(async (pokemon) => {
+        const fetchData = async () => {
+          const pokemonsData = await Promise.all(
+            data.results.map(async (pokemon: Pokemon) => {
+              
               const response = await fetch(pokemon.url);
               const pokemonData = await response.json();
               // console.log('pokemonData: ', pokemonData)
@@ -87,12 +34,48 @@ function Pokemons() {
             })
           );
           
-          // console.log('pokemonsData: ', pokemonsData)
-          const newPokemonsList = [...state.detailedPokemonsList, ...newData]
-          // setPokemonsData(newPokemonsList);
-          dispatch({ type: 'SET_POKEMONS', payload: newPokemonsList });
+          const newPokemonsList = [...state.detailedPokemonsList, ...pokemonsData]
+          dispatch({ type: 'SET_POKEMONS', payload: newPokemonsList });  
+        
           
-          // console.log('After dispatch:', state.detailedPokemonsList);
+        };
+      
+        fetchData();
+    
+      })
+  }, []);
+
+
+
+  // Functions
+
+  
+
+  function getMorePokemons() {
+
+
+    fetch(pokemonsResponse.next)
+      .then(res => res.json())
+      .then(newPokemons => {
+
+        console.log('data: ', newPokemons)
+        setPokemonsResponse(newPokemons)
+
+        newPokemons
+
+        // console.log('newPokemonsData: ', newPokemonsData)
+
+        const fetchDataAgain = async () => {
+          const newData = await Promise.all(
+            newPokemons.results.map(async (pokemon: Pokemon) => {
+              const response = await fetch(pokemon.url);
+              const pokemonData = await response.json();
+              return pokemonData;
+            })
+          );
+          
+          const newPokemonsList = [...state.detailedPokemonsList, ...newData]
+          dispatch({ type: 'SET_POKEMONS', payload: newPokemonsList });          
         };
 
         fetchDataAgain();
@@ -114,7 +97,7 @@ function Pokemons() {
 
       <main className='list-none grid grid-cols-4 gap-4'>
         {
-          state.detailedPokemonsList?.map(pokemon => (
+          state.detailedPokemonsList?.map((pokemon: Pokemon) => (
             <Link
             key={pokemon.id}
             className='border'
