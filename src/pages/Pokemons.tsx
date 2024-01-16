@@ -15,78 +15,42 @@ function Pokemons() {
   const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | undefined>();
 
   useEffect(() => {
-    
-    fetch(API_ENDPOINT)
-      .then(res => res.json())
-      .then(data => {
-        
-        console.log('data: ', data)
-        setPokemonsResponse(data)
-
-        const fetchData = async () => {
-          const pokemonsData = await Promise.all(
-            data.results.map(async (pokemon: Pokemon) => {
-              
-              const response = await fetch(pokemon.url);
-              const pokemonData = await response.json();
-              // console.log('pokemonData: ', pokemonData)
-              return pokemonData;
-            })
-          );
-          
-          const newPokemonsList = [...state.detailedPokemonsList, ...pokemonsData]
-          dispatch({ type: 'SET_POKEMONS', payload: newPokemonsList });  
-        
-          
-        };
-      
-        fetchData();
-    
-      })
+    if (state.detailedPokemonsList.length === 0) {
+      const getFirstData = async () => {        
+        const newDetailedPokemons = await getDetailedPokemonsList(API_ENDPOINT)
+        dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemons });          
+      }
+      getFirstData()
+    }
   }, []);
 
 
 
   // Functions
+  async function getDetailedPokemonsList(fetchURL: string) {
 
-  
+    const response = await fetch(fetchURL);
+    const pokemonsData = await response.json();
 
-  function getMorePokemons() {
+    setPokemonsResponse(pokemonsData);
 
-
-    fetch(pokemonsResponse.next)
-      .then(res => res.json())
-      .then(newPokemons => {
-
-        console.log('data: ', newPokemons)
-        setPokemonsResponse(newPokemons)
-
-        newPokemons
-
-        // console.log('newPokemonsData: ', newPokemonsData)
-
-        const fetchDataAgain = async () => {
-          const newData = await Promise.all(
-            newPokemons.results.map(async (pokemon: Pokemon) => {
-              const response = await fetch(pokemon.url);
-              const pokemonData = await response.json();
-              return pokemonData;
-            })
-          );
-          
-          const newPokemonsList = [...state.detailedPokemonsList, ...newData]
-          dispatch({ type: 'SET_POKEMONS', payload: newPokemonsList });          
-        };
-
-        fetchDataAgain();
-        
-
-        // setPokemons(newPokemons)
+    const newDetailedPokemons = await Promise.all(
+      pokemonsData.results.map(async (pokemon: Pokemon) => {
+        const response = await fetch(pokemon.url);
+        const pokemonData = await response.json();
+        return pokemonData;
       })
+    );
 
+    console.log('newDetailedPokemons: ', newDetailedPokemons);
+    return newDetailedPokemons;
+    
+  }
 
-
-
+  async function loadMorePokemons() {
+    const newDetailedPokemons = await getDetailedPokemonsList(pokemonsResponse.next)
+    const newDetailedPokemonsList = [...state.detailedPokemonsList, ...newDetailedPokemons]
+    dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemonsList });
   }
 
 
@@ -115,7 +79,7 @@ function Pokemons() {
 
       <button 
         className='mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'
-        onClick={getMorePokemons}>
+        onClick={loadMorePokemons}>
       Load more
       </button>
 
