@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { usePokemonContext } from '../context/PokemonContext';
 import { Link } from 'react-router-dom';
 import {Pokemon, PokemonsResponse} from '../interfaces/interfaces'
-import { fetchPokemons, fetchPokemon } from '../services/pokemonService';
+// import { fetchPokemons, fetchPokemon } from '../services/pokemonService';
 
 
 
@@ -15,7 +15,8 @@ function Pokemons() {
   const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | undefined>();
 
   useEffect(() => {
-    if (state.detailedPokemonsList.length === 0) {
+    const detailedPokemonListIsEmpty = state.detailedPokemonsList.length === 0
+    if (detailedPokemonListIsEmpty) {
       const getFirstData = async () => {        
         const newDetailedPokemons = await getDetailedPokemonsList(API_ENDPOINT)
         dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemons });          
