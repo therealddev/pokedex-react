@@ -28,7 +28,7 @@ function PokemonDetails() {
 
   {
     pokemon && (
-    <div className='flex items-center justify-center flex-col bg-[#123]'>
+    <div className='flex items-center justify-center flex-col '>
 
       <header className=' bg-[#c1c1c1] w-[100%] flex flex-col justify-center items-center'>
 
@@ -49,7 +49,7 @@ function PokemonDetails() {
 
       <main className=' bg-white mx-10 p-3'>
 
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2">
         
           <section className='p-1'>
             <img
