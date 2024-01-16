@@ -56,23 +56,28 @@ function Pokemons() {
 
   return (
     <>
+    <div className='pokedex w-[87%] bg-white flex flex-col mx-auto px-3'>
+
 
       <h1 className='underline mb-10'>Pokedex</h1>
 
-      <main className='list-none grid grid-cols-4 gap-4'>
+      <main className='list-none grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4'>
         {
           state.detailedPokemonsList?.map((pokemon: Pokemon) => (
             <PokemonCard pokemon={pokemon} key={pokemon.id}/>
-          ))
-        }
+            ))
+          }
       </main>
 
       <button 
-        className='mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'
+        className='mt-10 bg-blue-500 hover:bg-blue-700
+        text-white font-bold py-2 px-4 border border-blue-700
+        rounded mx-auto mb-10'
         onClick={loadMorePokemons}>
       Load more
       </button>
 
+    </div>
     </>
   )
 

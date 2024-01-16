@@ -5,6 +5,14 @@ export interface Pokemon {
     front_default: string;
   }
   url: string,
+  types: [
+    {
+      type: {
+        name: string,
+        url: string,
+      }
+    }
+  ]
 }
 
 export interface detailedPokemonsList {
