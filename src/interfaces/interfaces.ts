@@ -12,7 +12,9 @@ export interface Pokemon {
         url: string,
       }
     }
-  ]
+  ],
+  height: number;
+  weight: number,
 }
 
 export interface detailedPokemonsList {

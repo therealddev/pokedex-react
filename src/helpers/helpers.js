@@ -1,5 +1,7 @@
 export function getPokemonImage(id) {
 
+  // TO-DO
+  // fallback link
   {/* <img src={`https://img.pokemondb.net/artwork/large/${pokemon.name}.jpg`} alt={`Front default sprite of ${pokemon.name}`} /> */}
 
 

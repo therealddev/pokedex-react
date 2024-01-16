@@ -12,3 +12,26 @@ body {
   font-size: 80%;
   padding-top: 2px;
 }
+/* 
+.trapezoid-shape {
+  width: 100%;
+  height: 200px;
+  background: red;
+  transform: perspective(10px) rotateX(1deg);
+
+
+
+}
+
+.pokedex-pokemon-pagination-title:before {
+  left: -75px;
+}
+.pokedex-pokemon-pagination-title:before, .pokedex-pokemon-pagination-title:after {
+  background: transparent url('https://assets.pokemon.com/static2/_ui/img/chrome/notches/notch-white-xxl.png') no-repeat 0 0;
+  bottom: 0;
+  content: " ";
+  position: absolute;
+  height: 52px;
+  width: 75px;
+}
+ */

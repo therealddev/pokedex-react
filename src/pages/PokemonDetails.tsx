@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Pokemon } from '../interfaces/interfaces';
+import {getPokemonImage, formatNumberFourDigits} from '../helpers/helpers'
+import PokemonTypes from '../components/PokemonTypes';
 
 
 function PokemonDetails() {
@@ -21,26 +23,131 @@ function PokemonDetails() {
   }, [])
 
 
-  return (
-    <>
+  return (<>
 
-      {
-        pokemon && (
-          <div>
-          <p>#{pokemon.id}</p>
-          <h2>Pokemon: {name}</h2>
-          <img
-            src={`https://img.pokemondb.net/artwork/large/${name}.jpg`}
-            alt={`Front default sprite of ${name}`}
-            className='h-[200px]'
-          />
-  
+
+  {
+    pokemon && (
+    <div className='flex items-center justify-center flex-col bg-[#123]'>
+
+      <header className=' bg-[#c1c1c1] w-[100%] flex flex-col justify-center items-center'>
+
+        <div className='text-[30px]
+        w-[60%] h-[60px] bg-white flex
+        flex items-center justify-center pokedex-pokemon-pagination-title'>
+          
+          <h1 className='mb-0 mr-3'>{pokemon.name}</h1>
+
+          <p className="id mb-0">
+            <span className="number-prefix">N.º&nbsp;</span>
+            {formatNumberFourDigits(pokemon.id)}
+          </p>
+
         </div>
-        )
-      }
 
-    </>
-  );
+      </header>
+
+      <main className=' bg-white mx-10 p-3'>
+
+        <div className="grid grid-cols-2">
+        
+          <section>
+            <img
+              src={getPokemonImage(pokemon.id)}
+              alt={`Front default sprite of ${name}`}
+              className='h-[400px] border bg-[#F2F2F2]'
+            />
+
+            <div className="pokemon-base-points">
+              <h3>Puntos de base</h3>
+
+              <ul className='flex flex-row text-[11px] gap-2'>  
+                <li>PS</li>
+                <li>Ataque</li>
+                <li>Defensa</li>
+                <li>Ataque Especial</li>
+                <li>Defensa Especial</li>
+                <li>Velocidad</li>
+              </ul>
+
+            </div>
+
+          </section>
+
+          <section>
+
+            <p className='pokemon-description mb-2'>
+            Este Pokémon nace con una semilla en el lomo, que
+            brota con el paso del tiempo.
+            </p>
+
+            <div className="pokemon-versions flex mb-2">
+              <p className='border mr-3 p-1'>Version X</p>
+              <p className='border p-1'>Version Y</p>
+            </div>
+
+            {/* TO-DO: Put this in a component */}
+            <div className="pokemon-stats grid grid-cols-2 bg-[#bdc8ee] rounded p-5 mb-2">
+              <div>
+
+                <div className="pokemon-height">
+                  <p className='text-white'>Altura</p>
+                  <p>{pokemon.height}</p>
+                </div>
+              
+                <div className="pokemon-height">
+                  <p className='text-white'>Peso</p>
+                  <p>{pokemon.weight}</p>
+                </div>
+
+                <div className="pokemon-height">
+                  <p className='text-white'>Sexo</p>
+                  <p>Standard</p>
+                </div>
+              </div>
+
+              <div>
+
+                <div className="pokemon-height">
+                  <p className='text-white'>Categoría</p>
+                  <p>Standard</p>
+                </div>
+
+                <div className="pokemon-height">
+                  <p className='text-white'>Habilidad</p>
+                  <p>Standard</p>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div className="pokemon-type mb-2">
+              <h3>Tipo</h3>
+              <PokemonTypes pokemon={pokemon} />
+            </div>
+
+            <div className="pokemon-type mb-2">
+              <h3>Debilidad</h3>
+              <PokemonTypes pokemon={pokemon} />
+            </div>
+            
+          </section>
+
+        </div>
+
+        <div className="pokemon-evolutions bg-[#bdc8ee]">
+          <ul>
+            <li>Evolution 1</li>
+            <li>Evolution 2</li>
+            <li>Evolution 3</li>
+          </ul>
+        </div>
+      </main>
+    </div>)
+  } 
+
+</>);
 }
 
 export default PokemonDetails;
