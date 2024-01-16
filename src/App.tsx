@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 
 import Pokemons from './pages/Pokemons'
-import Pokemon from './pages/Pokemon'
+import Pokemon from './pages/PokemonDetails'
 
 import { PokemonProvider } from './context/PokemonContext';
 

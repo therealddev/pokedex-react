@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Pokemon } from '../interfaces/interfaces';
 
-// Constants
-const POKEMON_API_ENDPOINT = 'https://pokeapi.co/api/v2/pokemon/ditto'
 
-function Pokemon() {
+function PokemonDetails() {
 
   // Hooks
   const { name } = useParams();
-  const [pokemon, setPokemon] = useState(null)
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
 
   useEffect(() => {
 
+    const POKEMON_API_ENDPOINT = `https://pokeapi.co/api/v2/pokemon/${name}/`
     fetch(POKEMON_API_ENDPOINT)
       .then(res => res.json())
       .then(data => {
@@ -43,4 +43,4 @@ function Pokemon() {
   );
 }
 
-export default Pokemon;
+export default PokemonDetails;
