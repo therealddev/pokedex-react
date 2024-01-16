@@ -10,7 +10,6 @@ function Pokemons() {
 
   // Hooks
   const { state, dispatch } = usePokemonContext();
-  const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | null>();
 
   useEffect(() => {
     const detailedPokemonListIsEmpty = state.detailedPokemonsList.length === 0
@@ -31,7 +30,7 @@ function Pokemons() {
     const response = await fetch(fetchURL);
     const pokemonsData = await response.json();
 
-    setPokemonsResponse(pokemonsData);
+    dispatch({ type: 'SET_POKEMONS_RESPONSE', payload: pokemonsData });
 
     const newDetailedPokemons = await Promise.all(
       pokemonsData.results.map(async (pokemon: Pokemon) => {
@@ -47,9 +46,9 @@ function Pokemons() {
   }
 
   async function loadMorePokemons() {
-    if (pokemonsResponse == null || pokemonsResponse == undefined) return
-    if (pokemonsResponse.next == null) return
-    const newDetailedPokemons = await getDetailedPokemonsList(pokemonsResponse.next)
+    if (state.pokemonsResponse == null || state.pokemonsResponse == undefined) return
+    if (state.pokemonsResponse.next == null) return
+    const newDetailedPokemons = await getDetailedPokemonsList(state.pokemonsResponse.next)
     const newDetailedPokemonsList = [...state.detailedPokemonsList, ...newDetailedPokemons]
     dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemonsList });
   }
