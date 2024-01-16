@@ -51,7 +51,7 @@ function PokemonDetails() {
 
         <div className="grid grid-cols-2">
         
-          <section>
+          <section className='p-1'>
             <img
               src={getPokemonImage(pokemon.id)}
               alt={`Front default sprite of ${name}`}
@@ -61,20 +61,20 @@ function PokemonDetails() {
             <div className="pokemon-base-points">
               <h3>Puntos de base</h3>
 
-              <ul className='flex flex-row text-[11px] gap-2'>  
-                <li>PS</li>
-                <li>Ataque</li>
-                <li>Defensa</li>
-                <li>Ataque Especial</li>
-                <li>Defensa Especial</li>
-                <li>Velocidad</li>
+              <ul className='flex flex-row text-[11px] gap-1'>  
+                <li className='border p-1'> 23 <span>PS</span> </li>
+                <li className='border p-1'>73 <span>Ataque</span></li>
+                <li className='border p-1'>61 <span>Defensa</span></li>
+                <li className='border p-1'>11 <span>Ataque</span></li>
+                <li className='border p-1'>15 <span>Defensa</span></li>
+                <li className='border p-1'>72 <span>Velocidad</span></li>
               </ul>
 
             </div>
 
           </section>
 
-          <section>
+          <section className='p-1'>
 
             <p className='pokemon-description mb-2'>
             Este Pokémon nace con una semilla en el lomo, que
@@ -129,15 +129,21 @@ function PokemonDetails() {
 
             <div className="pokemon-type mb-2">
               <h3>Debilidad</h3>
-              <PokemonTypes pokemon={pokemon} />
+              
+              <ul className="pokemon-versions flex mb-2">
+                <li className='border mr-3 p-1'>Debilidad 1</li>
+                <li className='border mr-3 p-1'>Debilidad 2</li>
+                <li className='border p-1'>Debilidad 3</li>
+              </ul>
             </div>
             
           </section>
 
         </div>
 
-        <div className="pokemon-evolutions bg-[#bdc8ee]">
-          <ul>
+        <div className="pokemon-evolutions bg-[#bdc8ee] mt-5 p-3
+        flex justify-center items-center">
+          <ul className='flex flex-row gap-5'>
             <li>Evolution 1</li>
             <li>Evolution 2</li>
             <li>Evolution 3</li>
