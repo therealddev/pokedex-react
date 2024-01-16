@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { usePokemonContext } from '../context/PokemonContext';
 import { Link } from 'react-router-dom';
 import {Pokemon, PokemonsResponse} from '../interfaces/interfaces'
-// import { fetchPokemons, fetchPokemon } from '../services/pokemonService';
-
+import PokemonCard from '../components/PokemonCard';
 
 
 function Pokemons() {
@@ -63,17 +62,7 @@ function Pokemons() {
       <main className='list-none grid grid-cols-4 gap-4'>
         {
           state.detailedPokemonsList?.map((pokemon: Pokemon) => (
-            <Link
-            key={pokemon.id}
-            className='border'
-              to={`pokemon/${pokemon.name}/`}>
-
-              <p>#{pokemon.id}</p>
-              <h3>{pokemon.name}</h3>
-
-              <img src={`https://img.pokemondb.net/artwork/large/${pokemon.name}.jpg`} alt={`Front defamaint sprite of ${pokemon.name}`} />
-
-            </Link>
+            <PokemonCard pokemon={pokemon} key={pokemon.id}/>
           ))
         }
       </main>
