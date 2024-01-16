@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { usePokemonContext } from '../context/PokemonContext';
-import {Pokemon, PokemonsResponse} from '../interfaces/interfaces'
+import {Pokemon} from '../interfaces/interfaces'
 import PokemonCard from '../components/PokemonCard';
 
 
