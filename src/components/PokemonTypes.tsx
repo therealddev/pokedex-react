@@ -1,8 +1,11 @@
-import { Pokemon } from '../interfaces/interfaces'
 import pokemonTypes from '../data/pokemonTypes';
+import { Pokemon } from '../interfaces/interfaces';
 
+interface PokemonTypesProps {
+  pokemon: Pokemon;
+}
 
-const PokemonTypes = ({pokemon}) => {
+const PokemonTypes: React.FC<PokemonTypesProps> = ({ pokemon }) => {
 
   return (
     <ul className='flex flex-row'>
@@ -10,7 +13,8 @@ const PokemonTypes = ({pokemon}) => {
         pokemon.types.map(currType => {
 
         const detailedType = pokemonTypes.find((currDetailedType) => currDetailedType.name === currType.type.name)
-        
+        if (!detailedType) return
+
         return (
           <li
             key={detailedType.id}
