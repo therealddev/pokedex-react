@@ -1,13 +1,13 @@
 // PokemonContext.tsx
 import React, { createContext, useReducer, useContext, ReactNode, Dispatch } from 'react';
-
+import { Pokemon } from '../interfaces/interfaces';
 
 
 interface State {
-  detailedPokemonsList: [];
+  detailedPokemonsList: Pokemon[];
 }
 
-type Action = { type: 'SET_POKEMONS'; payload: [] };
+type Action = { type: 'SET_POKEMONS'; payload: Pokemon[] };
 
 interface ContextProps {
   state: State;

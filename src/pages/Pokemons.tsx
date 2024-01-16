@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { usePokemonContext } from '../context/PokemonContext';
-import { Link } from 'react-router-dom';
 import {Pokemon, PokemonsResponse} from '../interfaces/interfaces'
 import PokemonCard from '../components/PokemonCard';
 
@@ -11,14 +10,14 @@ function Pokemons() {
 
   // Hooks
   const { state, dispatch } = usePokemonContext();
-  const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | undefined>();
+  const [pokemonsResponse, setPokemonsResponse] = useState<PokemonsResponse | null>();
 
   useEffect(() => {
     const detailedPokemonListIsEmpty = state.detailedPokemonsList.length === 0
     if (detailedPokemonListIsEmpty) {
       const getFirstData = async () => {        
         const newDetailedPokemons = await getDetailedPokemonsList(API_ENDPOINT)
-        dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemons });          
+        dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemons as Pokemon[] });          
       }
       getFirstData()
     }
@@ -48,6 +47,8 @@ function Pokemons() {
   }
 
   async function loadMorePokemons() {
+    if (pokemonsResponse == null || pokemonsResponse == undefined) return
+    if (pokemonsResponse.next == null) return
     const newDetailedPokemons = await getDetailedPokemonsList(pokemonsResponse.next)
     const newDetailedPokemonsList = [...state.detailedPokemonsList, ...newDetailedPokemons]
     dispatch({ type: 'SET_POKEMONS', payload: newDetailedPokemonsList });

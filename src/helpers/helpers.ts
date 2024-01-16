@@ -1,4 +1,4 @@
-export function getPokemonImage(id) {
+export function getPokemonImage(id: number) {
 
   // TO-DO
   // fallback link
@@ -16,7 +16,7 @@ export function getPokemonImage(id) {
 }
 
 
-export function formatNumberFourDigits(number) {
+export function formatNumberFourDigits(number: number) {
   let num = String(number);
   while (num.length < 3) {
     num = '0' + num;
